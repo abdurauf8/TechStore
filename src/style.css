@@ -14,7 +14,7 @@
   --text-color: #172033;
   --second-text-color: white;
   --text-secondary: #64748b;
-  --border-color: #e2e8f0;
+  --border-color: #D8E1EE;
   --hover-color: #dfdfdf;
   --primary-color: #1677ff;
   --primary-hover: #0866e8;
@@ -240,11 +240,15 @@ body .alert.active {
   display: flex;
   align-items: center;
   color: var(--text-color);
+  cursor: pointer;
 }
 .products .product .buttons_part #add_favourite i {
   margin-right: 5px;
   color: var(--primary-color);
   font-size: 18px;
+}
+.products .product .buttons_part #add_favourite.added i {
+  color: rgb(255, 49, 49);
 }
 .products .product .buttons_part #add_cart {
   padding: 6px 20px;
@@ -256,11 +260,15 @@ body .alert.active {
   align-items: center;
   flex-wrap: nowrap;
   white-space: nowrap;
+  cursor: pointer;
 }
 .products .product .buttons_part #add_cart i {
   margin-right: 5px;
   color: var(--second-text-color);
   font-size: 18px;
+}
+.products .product .buttons_part #add_cart.added {
+  background-color: rgb(68, 177, 65);
 }
 
 .products.empty {

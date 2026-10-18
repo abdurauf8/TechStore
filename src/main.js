@@ -3,7 +3,7 @@ const cartCounter = document.querySelector('#cart_count');
 const cartCount = () => {
     cartCounter.style.display = "flex";
     const cartNow = JSON.parse(localStorage.getItem("cart"));
-    if(cartNow) {
+    if(cartNow && cartNow.cart.length > 0) {
         cartCounter.textContent = `${cartNow.cart.length}`;
         return;
     };
@@ -37,13 +37,15 @@ themeBtn.addEventListener('click', () => {
     }
 });
 ///////////////////////// Notification
+let timerN;
 const notify = (message) => {
+    clearTimeout(timerN);
     const alert = document.querySelector('.alert');
     alert.textContent = message;
     alert.classList.add('active');
-    setTimeout(() => {
+    timerN = setTimeout(() => {
         alert.classList.remove('active');
-    }, 4000);
+    }, 2000);
 };
 ///////////////////////// Made page empty
 const emptyPage = () => {
@@ -311,9 +313,30 @@ const fetchProducts = async function () {
                 newProduct.append(newImgPart, newInfoPart, newBtnsPart);
                 fragment.append(newProduct);
 
+                // Rendering add cart btns at current state
+                const currentCart = JSON.parse(localStorage.getItem("cart"));
+                if(currentCart){
+                    for(let p of currentCart.cart){
+                        if(product.id === p.id){
+                            newAddCartBtn.classList.add("added");
+                            newAddCartBtn.innerHTML = `<i class="fa-solid fa-cart-arrow-down"></i> Added`;
+                        }
+                    }
+                }
+                // Rendering add favourite btns at current state
+                const currentFavourites = JSON.parse(localStorage.getItem("favourites"));
+                if(currentFavourites){
+                    for(let p of currentFavourites.favourites){
+                        if(product.id === p.id){
+                            newAddFavouriteBtn.classList.add("added");
+                            newAddFavouriteBtn.innerHTML = `<i class="fa-solid fa-heart"></i> Favourited`;
+                        }
+                    }
+                }
+
                 // Adding to cart and favourites
                 newProduct.addEventListener('click', (e) => {
-                    if(e.target.id === "add_cart"){
+                    if(e.target.closest("#add_cart")){
                         if(localStorage.getItem("cart") === null){
                             let localCart = {
                                 cart: []
@@ -322,6 +345,8 @@ const fetchProducts = async function () {
                             localStorage.setItem("cart", JSON.stringify(localCart));
                             notify("Savatga birinchi mahsulot qo'shildi.")
                             cartCount();
+                            e.target.closest("#add_cart").classList.add("added");
+                            e.target.closest("#add_cart").innerHTML = `<i class="fa-solid fa-cart-arrow-down"></i> Added`;
                         }else{
                             let localCart = JSON.parse(localStorage.getItem("cart"));
                             let contains = false;
@@ -333,17 +358,27 @@ const fetchProducts = async function () {
                                 localStorage.setItem("cart", JSON.stringify(localCart));
                                 notify("Savatga qo'shildi.");
                                 cartCount();
+                                e.target.closest("#add_cart").classList.add("added");
+                                e.target.closest("#add_cart").innerHTML = `<i class="fa-solid fa-cart-arrow-down"></i> Added`;
                             }else{
-                                notify("Bu mahsulot savatda allaqachon mavjud!")
+                                localCart.cart = localCart.cart.filter(p => p.id !== product.id);
+                                localStorage.setItem("cart", JSON.stringify(localCart));
+                                e.target.closest("#add_cart").classList.remove("added");
+                                e.target.closest("#add_cart").innerHTML = `<i class="fa-solid fa-cart-plus"></i> Add to cart`;
+                                cartCount(); 
+                                notify("Bu mahsulot savatdan o'chirildi.")
+                                if(localCart.cart.length < 1) cartCounter.style.display = 'none';
                             }
                         }
-                    }else if(e.target.id === "add_favourite"){
+                    }else if(e.target.closest("#add_favourite")){
                         if(localStorage.getItem("favourites") === null){
                             let localFavourites = {
                                 favourites: []
                             };
                             localFavourites.favourites.push(product);
                             localStorage.setItem("favourites", JSON.stringify(localFavourites));
+                            e.target.closest("#add_favourite").classList.add("added");
+                            e.target.closest("#add_favourite").innerHTML = `<i class="fa-solid fa-heart"></i> Favourited`;
                             notify("Birinchi sevimli qo'shildi.");
                         }else{
                             let localFavourites = JSON.parse(localStorage.getItem("favourites"));
@@ -354,9 +389,15 @@ const fetchProducts = async function () {
                             if(!contains){
                                 localFavourites.favourites.push(product);
                                 localStorage.setItem("favourites", JSON.stringify(localFavourites));
+                                e.target.closest("#add_favourite").classList.add("added");
+                                e.target.closest("#add_favourite").innerHTML = `<i class="fa-solid fa-heart"></i> Favourited`;
                                 notify("Sevimlilarga qo'shildi");
                             }else{
-                                notify("Bu mahsulot sevimlilarda allaqachon mavjud!")
+                                localFavourites.favourites = localFavourites.favourites.filter(p => p.id !== product.id);
+                                localStorage.setItem("favourites", JSON.stringify(localFavourites));
+                                e.target.closest("#add_favourite").classList.remove("added");
+                                e.target.closest("#add_favourite").innerHTML = `<i class="fa-regular fa-heart"></i> Favourite`;
+                                notify("Bu mahsulot sevimlilardan o'chirildi.")
                             }
                         }
                     }
