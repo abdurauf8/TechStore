@@ -1,11 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TechStore - Cart</title>
+    <link rel="stylesheet" href="src/cart.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
+        integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="apple-touch-icon" sizes="180x180" href="src/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="src/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="src/assets/favicon/favicon-16x16.png">
 </head>
+
 <body>
-    
+    <nav class="navbar">
+        <div class="container_nav">
+            <div class="logo"><img src="src/assets/logo_nav_light.png" id="logo" alt=""></div>
+            <div class="right_nav">
+                <div class="theme">
+                    <i class="fa-regular fa-sun"></i>
+                    <i class="fa-regular fa-moon"></i>
+                    <div class="active_theme"></div>
+                </div>
+                <a href="index.html" class="home"><i class="fa-regular fa-house"></i></a>
+                <a href="#" id="login_link">Log in</a>
+            </div>
+            <div class="bars"><i class="fa-solid fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <header class="header">
+            <div class="left_part">
+                <img src="src/assets/cart_img.png" alt="cart">
+                <div class="texts">
+                    <h1>Your Cart</h1>
+                    <p>You have <span id="cart_count">3</span> items in you cart</p>
+                </div>
+            </div>
+            <div class="right_part"></div>
+        </header>
+
+        <main class="main">
+            <div class="products">
+                <div class="product">
+                    <div class="info_part">
+                        <img src="http://localhost:3300/img/phone-01.png" alt="">
+                        <div class="text_info">
+                            <p id="product_name">Nova X Pro</p>
+                            <h3 id="product_price">699 $</h3>
+                            <p id="in_favourites"><i class="fa-regular fa-heart"></i>In favourites</p>
+                        </div>
+                    </div>
+                    <div class="controls_part">
+                        <div class="product_counter">
+                            <button>-</button>
+                            <p id="number_of_product">1</p>
+                            <button>+</button>
+                        </div>
+                        <div class="subtotal_price">
+                            <p>Subtotal</p>
+                            <h3 id="sub_price">699 $</h3>
+                        </div>
+                        <button class="delete_btn"><i class="fa-regular fa-trash-can"></i></button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="info_part">
+                        <img src="http://localhost:3300/img/computer-01.png" alt="">
+                        <div class="text_info">
+                            <p id="product_name">Nova X Pro</p>
+                            <h3 id="product_price">699 $</h3>
+                            <p id="in_favourites"><i class="fa-regular fa-heart"></i>In favourites</p>
+                        </div>
+                    </div>
+                    <div class="controls_part">
+                        <div class="product_counter">
+                            <button>-</button>
+                            <p id="number_of_product">1</p>
+                            <button>+</button>
+                        </div>
+                        <div class="subtotal_price">
+                            <p>Subtotal</p>
+                            <h3 id="sub_price">699 $</h3>
+                        </div>
+                        <button class="delete_btn"><i class="fa-regular fa-trash-can"></i></button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="info_part">
+                        <img src="http://localhost:3300/img/charger-03.png" alt="">
+                        <div class="text_info">
+                            <p id="product_name">Nova X Pro</p>
+                            <h3 id="product_price">699 $</h3>
+                            <p id="in_favourites"><i class="fa-regular fa-heart"></i>In favourites</p>
+                        </div>
+                    </div>
+                    <div class="controls_part">
+                        <div class="product_counter">
+                            <button>-</button>
+                            <p id="number_of_product">1</p>
+                            <button>+</button>
+                        </div>
+                        <div class="subtotal_price">
+                            <p>Subtotal</p>
+                            <h3 id="sub_price">699 $</h3>
+                        </div>
+                        <button class="delete_btn"><i class="fa-regular fa-trash-can"></i></button>
+                    </div>
+                </div>
+            </div>
+            <aside class="aside">
+                <h3><i class="fa-solid fa-cart-shopping"></i>Order summary</h3>
+                <ul>
+                    <li>
+                        <p class="property">Items(<span id="cart_count_aside">3</span>)</p>
+                        <div class="value">2200 $</div>
+                    </li>
+                    <li id="delivery_status">
+                        <p>Delivery</p>
+                        <div class="free" id="delivery_price">Free</div>
+                    </li>
+                </ul>
+                <div class="total">
+                    <h2>Total</h2>
+                    <h3 id="total_price">2 200 $</h3>
+                </div>
+                <button>Proceed to checkout<i class="fa-solid fa-arrow-right-long"></i></button>
+                <div class="secure_part">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <div class="secure_text_part">
+                        <h4>Secure Checkout</h4>
+                        <p>Your information is safe with us.</p>
+                    </div>
+                </div>
+            </aside>
+        </main>
+
+        <a href="index.html" class="continue_shopping">
+            <i class="fa-solid fa-arrow-left-long"></i>
+            Continue shopping
+        </a>
+
+    </div>
+
+    <footer>
+        <div class="container_footer container">
+            <h3>TechStore online shop</h3>
+            <p>© 2026 TechStore. All rights reserved.</p>
+            <span>
+                <a>Privacy Policy</a>
+                <a>Terms of Use</a>
+            </span>
+        </div>
+    </footer>
+
+    <span class="alert"></span>
+    <script src="src/cart.js"></script>
 </body>
+
 </html>

@@ -156,9 +156,12 @@ body {
             .cart {
                 display: flex;
                 align-items: center;
+                color: var(--text-color);
+                text-decoration: none;
                 
                 i{
                     position: relative;
+                    font-size: 20px;
                     #cart_count{
                         position: absolute;
                         font-weight: normal;
@@ -171,8 +174,8 @@ body {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        top: -70%;
-                        right: -70%;
+                        top: -55%;
+                        right: -55%;
                     }
                 }
             }
@@ -233,7 +236,7 @@ body {
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     padding-bottom: 10px;
-    min-height: 50vh;
+    min-height: 60vh;
     align-items: center;
 
     .product {

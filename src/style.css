@@ -136,9 +136,12 @@ body .alert.active {
 .navbar .container_nav .right_nav .cart {
   display: flex;
   align-items: center;
+  color: var(--text-color);
+  text-decoration: none;
 }
 .navbar .container_nav .right_nav .cart i {
   position: relative;
+  font-size: 20px;
 }
 .navbar .container_nav .right_nav .cart i #cart_count {
   position: absolute;
@@ -152,8 +155,8 @@ body .alert.active {
   display: flex;
   align-items: center;
   justify-content: center;
-  top: -70%;
-  right: -70%;
+  top: -55%;
+  right: -55%;
 }
 .navbar .container_nav .right_nav #login_link {
   background-color: var(--primary-color);
@@ -203,7 +206,7 @@ body .alert.active {
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   padding-bottom: 10px;
-  min-height: 50vh;
+  min-height: 60vh;
   align-items: center;
 }
 .products .product {
