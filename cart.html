@@ -45,80 +45,20 @@
         </header>
 
         <main class="main">
-            <div class="products">
-                <div class="product">
-                    <div class="info_part">
-                        <img src="http://localhost:3300/img/phone-01.png" alt="">
-                        <div class="text_info">
-                            <p id="product_name">Nova X Pro</p>
-                            <h3 id="product_price">699 $</h3>
-                            <p id="in_favourites"><i class="fa-regular fa-heart"></i>In favourites</p>
-                        </div>
-                    </div>
-                    <div class="controls_part">
-                        <div class="product_counter">
-                            <button>-</button>
-                            <p id="number_of_product">1</p>
-                            <button>+</button>
-                        </div>
-                        <div class="subtotal_price">
-                            <p>Subtotal</p>
-                            <h3 id="sub_price">699 $</h3>
-                        </div>
-                        <button class="delete_btn"><i class="fa-regular fa-trash-can"></i></button>
-                    </div>
-                </div>
-                <div class="product">
-                    <div class="info_part">
-                        <img src="http://localhost:3300/img/computer-01.png" alt="">
-                        <div class="text_info">
-                            <p id="product_name">Nova X Pro</p>
-                            <h3 id="product_price">699 $</h3>
-                            <p id="in_favourites"><i class="fa-regular fa-heart"></i>In favourites</p>
-                        </div>
-                    </div>
-                    <div class="controls_part">
-                        <div class="product_counter">
-                            <button>-</button>
-                            <p id="number_of_product">1</p>
-                            <button>+</button>
-                        </div>
-                        <div class="subtotal_price">
-                            <p>Subtotal</p>
-                            <h3 id="sub_price">699 $</h3>
-                        </div>
-                        <button class="delete_btn"><i class="fa-regular fa-trash-can"></i></button>
-                    </div>
-                </div>
-                <div class="product">
-                    <div class="info_part">
-                        <img src="http://localhost:3300/img/charger-03.png" alt="">
-                        <div class="text_info">
-                            <p id="product_name">Nova X Pro</p>
-                            <h3 id="product_price">699 $</h3>
-                            <p id="in_favourites"><i class="fa-regular fa-heart"></i>In favourites</p>
-                        </div>
-                    </div>
-                    <div class="controls_part">
-                        <div class="product_counter">
-                            <button>-</button>
-                            <p id="number_of_product">1</p>
-                            <button>+</button>
-                        </div>
-                        <div class="subtotal_price">
-                            <p>Subtotal</p>
-                            <h3 id="sub_price">699 $</h3>
-                        </div>
-                        <button class="delete_btn"><i class="fa-regular fa-trash-can"></i></button>
-                    </div>
-                </div>
+            <div class="select_all_box">
+                <input type="checkbox" id="select_all">
+                <label for="select_all">Select All</label>
             </div>
+
+            <div class="products">
+            </div>
+
             <aside class="aside">
                 <h3><i class="fa-solid fa-cart-shopping"></i>Order summary</h3>
                 <ul>
                     <li>
-                        <p class="property">Items(<span id="cart_count_aside">3</span>)</p>
-                        <div class="value">2200 $</div>
+                        <p class="property">Items(<span id="cart_count_aside">0</span>)</p>
+                        <div id="cost_price">0 $</div>
                     </li>
                     <li id="delivery_status">
                         <p>Delivery</p>
@@ -127,7 +67,7 @@
                 </ul>
                 <div class="total">
                     <h2>Total</h2>
-                    <h3 id="total_price">2 200 $</h3>
+                    <h3 id="total_price">0 $</h3>
                 </div>
                 <button>Proceed to checkout<i class="fa-solid fa-arrow-right-long"></i></button>
                 <div class="secure_part">

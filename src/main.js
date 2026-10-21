@@ -341,7 +341,7 @@ const fetchProducts = async function () {
                             let localCart = {
                                 cart: []
                             };
-                            localCart.cart.push(product);
+                            localCart.cart.push({...product, quantity: 1, checked: true});
                             localStorage.setItem("cart", JSON.stringify(localCart));
                             notify("Savatga birinchi mahsulot qo'shildi.")
                             cartCount();
@@ -354,7 +354,7 @@ const fetchProducts = async function () {
                                 if(p.id === product.id) contains = true;
                             }
                             if(!contains){
-                                localCart.cart.push(product);
+                                localCart.cart.push({...product, quantity: 1, checked: true});
                                 localStorage.setItem("cart", JSON.stringify(localCart));
                                 notify("Savatga qo'shildi.");
                                 cartCount();
