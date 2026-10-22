@@ -59,6 +59,11 @@ const calculateTotal = () => {
 calculateTotal();
 ////////////////////////////////
 const products = document.querySelector('.products');
+const emptyCart = () => {
+    products.innerHTML = `<p class="empty_cart">There are no items in the shopping cart.</p>`;
+    products.classList.add("empty");
+};
+////////////////////////////////
 
 const renderCart = async () => {
     try {
@@ -69,6 +74,10 @@ const renderCart = async () => {
         const data = res.json();
 
         const cartData = JSON.parse(localStorage.getItem("cart"));
+        if(cartData.cart.length < 1){
+            emptyCart();
+            return;
+        }
 
         let allChecked = true;
         for(let p of cartData.cart){
@@ -214,4 +223,10 @@ selectAllBox.addEventListener("click", (e) => {
         renderCart();
         calculateTotal();
     }
+});
+
+/////// Checkout
+const checkoutBtn = document.querySelector('#checkout_btn');
+checkoutBtn.addEventListener('click', () => {
+    notify("Hozircha keingi sahifa mavjud emas.")
 });

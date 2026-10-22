@@ -302,7 +302,7 @@ const fetchProducts = async function () {
                 newProductName.textContent = product.name;
                 newProductPrice.textContent = product.price + ' $';
                 newAddFavouriteBtn.textContent = 'Favourite';
-                newAddCartBtn.textContent = 'Add to Cart';
+                newAddCartBtn.textContent = 'Add to cart';
 
                 newImgPart.append(newImg);
                 newInfoPart.append(newProductName, newProductPrice);

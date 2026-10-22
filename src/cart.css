@@ -134,6 +134,10 @@ body .alert.active {
   font-size: 22px;
   text-decoration: none;
   color: var(--text-color);
+  transition: 0.2s;
+}
+.navbar .container_nav .right_nav .home:hover {
+  color: var(--text-secondary);
 }
 .navbar .container_nav .right_nav #login_link {
   background-color: var(--primary-color);
@@ -141,6 +145,10 @@ body .alert.active {
   text-decoration: none;
   border-radius: 10px;
   padding: 7px 20px;
+  transition: 0.2s;
+}
+.navbar .container_nav .right_nav #login_link:hover {
+  background-color: var(--primary-hover);
 }
 .navbar .container_nav .bars {
   display: none;
@@ -341,6 +349,14 @@ body .alert.active {
 }
 .main .products .product:first-child {
   border-top: none;
+}
+.main .products.empty {
+  min-height: 30vh;
+  background-color: transparent;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 .main .aside {
   flex: 2;

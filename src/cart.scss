@@ -157,6 +157,10 @@ body {
                 font-size: 22px;
                 text-decoration: none;
                 color: var(--text-color);
+                transition: 0.2s;
+            }
+            .home:hover{
+                color: var(--text-secondary);
             }
 
             #login_link {
@@ -165,7 +169,10 @@ body {
                 text-decoration: none;
                 border-radius: 10px;
                 padding: 7px 20px;
-
+                transition: 0.2s;
+            }
+            #login_link:hover{
+                background-color: var(--primary-hover);
             }
         }
 
@@ -400,6 +407,14 @@ body {
         .product:first-child {
             border-top: none;
         }
+    }
+    .products.empty{
+        min-height: 30vh;
+        background-color: transparent;
+        border: none;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     }
 
     .aside {
