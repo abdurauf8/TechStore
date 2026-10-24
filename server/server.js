@@ -205,6 +205,11 @@ const server = createServer((req, res) => {
                 req.pipe(busboy);
             } else if (req.method === "DELETE") {
                 const productId = req.url.split('/')[2];
+                const product = data.find(p => p.id === parseInt(productId));
+                if(!product){
+                    res.writeHead(404);
+                    res.end(JSON.stringify({ holat: "mahsulot topilmadi" }));
+                }
                 const index = data.findIndex(p => p.id === parseInt(productId));
                 if(index !== -1){
                     data.splice(index, 1);

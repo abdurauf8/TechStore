@@ -105,7 +105,6 @@ const changeNav = () => {
             categoryInput.value = '';
             postBtn.textContent = 'Add product';
             document.body.style.overflow = 'hidden';
-            imgInput.setAttribute("required");
         });
     }else {
         addProductBtn.style.display = "none";

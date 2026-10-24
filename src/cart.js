@@ -73,7 +73,6 @@ const renderCart = async () => {
         if(!res.ok) {
             throw new Error("Serverdan ma'lumot olishda xatolik");
         };
-        const data = res.json();
 
         const cartData = JSON.parse(localStorage.getItem("cart"));
         if (!cartData || cartData.cart.length < 1) {
