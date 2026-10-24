@@ -58,7 +58,7 @@ const server = createServer((req, res) => {
                     // Noyob fayl nomi va saqlash manzili
                     const ext = path.extname(info.filename).toLowerCase();
                     const filename = crypto.randomUUID() + ext;
-                    const savePath = path.join('img', filename);
+                    const savePath = path.join(import.meta.dirname, 'img', filename);
 
                     imagePath = `/img/${filename}`;
 
@@ -154,7 +154,7 @@ const server = createServer((req, res) => {
 
                     const ext = path.extname(info.filename).toLowerCase();
                     const filename = crypto.randomUUID() + ext;
-                    const savePath = path.join('img', filename);
+                    const savePath = path.join(import.meta.dirname, 'img', filename);
 
                     imagePath = `/img/${filename}`;
 

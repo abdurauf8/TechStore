@@ -242,6 +242,10 @@ const fetchProducts = async function (role) {
 
         // Rendering pagenaton
         function pagenation(readyData) {
+            if (readyData.length === 0) {
+                emptyPage();
+                return;
+            }
             pagenationUl.style.display = 'flex';
 
             const numberOfPages = Math.ceil(readyData.length / 12);

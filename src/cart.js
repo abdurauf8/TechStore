@@ -41,7 +41,9 @@ const checkedItemsCount = document.querySelector('#cart_count_aside');
 const costPrice = document.querySelector('#cost_price');
 const totalPrice = document.querySelector("#total_price")
 const calculateTotal = () => {
-    const currentCart = JSON.parse(localStorage.getItem("cart"));
+    const currentCart = JSON.parse(
+        localStorage.getItem('cart') || '{"cart":[]}'
+    );
     
     let { count, price } = currentCart.cart.reduce((acc, c) => {
         if(c.checked){
@@ -74,7 +76,7 @@ const renderCart = async () => {
         const data = res.json();
 
         const cartData = JSON.parse(localStorage.getItem("cart"));
-        if(cartData.cart.length < 1){
+        if (!cartData || cartData.cart.length < 1) {
             emptyCart();
             return;
         }
