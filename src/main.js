@@ -105,7 +105,7 @@ const changeNav = () => {
             categoryInput.value = '';
             postBtn.textContent = 'Add product';
             document.body.style.overflow = 'hidden';
-
+            imgInput.setAttribute("required");
         });
     }else {
         addProductBtn.style.display = "none";
@@ -655,6 +655,10 @@ postForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
         if (!editProductId) {
+            if(imgInput.files.length < 1) {
+                notify("Mahsulot suratini yuklang!!!");
+                return;
+            }
             const formData = new FormData();
             formData.append('name', nameInput.value);
             formData.append('category', categoryInput.value);
