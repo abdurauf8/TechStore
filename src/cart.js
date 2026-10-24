@@ -192,6 +192,7 @@ const renderCart = async () => {
                         localStorage.setItem('cart', JSON.stringify(cartData));
                         calculateTotal();
                         selectAll.checked = false;
+                        
                     }
                 }
             })
@@ -209,7 +210,7 @@ renderCart()
 ///////// Select All
 const selectAllBox = document.querySelector('.select_all_box');
 const selectAll = document.querySelector("#select_all");
-selectAllBox.addEventListener("click", (e) => {
+selectAllBox.addEventListener("click", () => {
     if(selectAll.checked){
         const currentCart = JSON.parse(localStorage.getItem("cart"));
         currentCart.cart.forEach(p => p.checked = true);

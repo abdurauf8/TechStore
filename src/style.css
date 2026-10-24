@@ -67,6 +67,162 @@ body .alert {
 body .alert.active {
   right: 20px;
 }
+body .login_screen {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+body .login_screen .login_tab {
+  width: 400px;
+  min-height: 500px;
+  border: 2px solid var(--border-color);
+  background-color: var(--surface-color);
+  border-radius: 30px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+}
+body .login_screen .login_tab .close_icon {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  font-size: 22px;
+  cursor: pointer;
+}
+body .login_screen .login_tab .logo img {
+  width: 200px;
+}
+body .login_screen .login_tab h1 {
+  margin: 20px 0;
+  font-weight: normal;
+  font-size: 40px;
+}
+body .login_screen .login_tab label {
+  font-size: 15px;
+  margin-bottom: 7px;
+}
+body .login_screen .login_tab input {
+  padding: 10px;
+  outline: none;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+body .login_screen .login_tab a {
+  color: var(--primary-color);
+  text-decoration: none;
+  text-align: end;
+  transition: 0.2s;
+}
+body .login_screen .login_tab a:hover {
+  color: var(--primary-hover);
+}
+body .login_screen .login_tab button {
+  margin-top: 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px;
+  font-size: 18px;
+  transition: 0.2s;
+  cursor: pointer;
+}
+body .login_screen .login_tab button:hover {
+  background-color: var(--primary-hover);
+}
+body .login_screen .login_tab span {
+  position: relative;
+  margin-bottom: 20px;
+}
+body .login_screen .login_tab span input {
+  width: 100%;
+  margin: 0;
+}
+body .login_screen .login_tab span i {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+body .form_screen {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+body .form_screen .form_tab {
+  width: 400px;
+  min-height: 600px;
+  border: 2px solid var(--border-color);
+  background-color: var(--surface-color);
+  border-radius: 30px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+}
+body .form_screen .form_tab .close_icon {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  font-size: 22px;
+  cursor: pointer;
+}
+body .form_screen .form_tab .logo img {
+  width: 200px;
+}
+body .form_screen .form_tab .img_box {
+  text-align: center;
+  padding: 20px 0;
+}
+body .form_screen .form_tab .img_box img {
+  width: 150px;
+}
+body .form_screen .form_tab input {
+  margin: 5px 0 20px 0;
+  padding: 8px;
+  outline: none;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: 15px;
+}
+body .form_screen .form_tab button {
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  transition: 0.2s;
+  cursor: pointer;
+}
+body .form_screen .form_tab button:hover {
+  background-color: var(--primary-hover);
+}
+body .form_screen .form_tab label {
+  font-size: 14px;
+}
 
 .navbar {
   box-shadow: 0 0 5px 2px var(--shadow-color);
@@ -103,6 +259,20 @@ body .alert.active {
 .navbar .container_nav .right_nav {
   display: flex;
   gap: 20px;
+}
+.navbar .container_nav .right_nav .add_product_btn {
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background-color: rgb(8, 185, 8);
+  padding: 7px 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+  outline: none;
+}
+.navbar .container_nav .right_nav .add_product_btn:hover {
+  background-color: rgb(73, 204, 73);
 }
 .navbar .container_nav .right_nav .theme {
   position: relative;
@@ -160,12 +330,16 @@ body .alert.active {
   right: -55%;
 }
 .navbar .container_nav .right_nav #login_link {
+  border: none;
+  font-size: 16px;
   background-color: var(--primary-color);
   color: var(--second-text-color);
   text-decoration: none;
   border-radius: 10px;
   padding: 7px 20px;
   transition: 0.2s;
+  cursor: pointer;
+  outline: none;
 }
 .navbar .container_nav .right_nav #login_link:hover {
   background-color: var(--primary-hover);
@@ -240,7 +414,7 @@ body .alert.active {
   align-items: center;
   justify-content: space-between;
 }
-.products .product .buttons_part #add_favourite {
+.products .product .buttons_part .add_favourite {
   padding: 6px 10px;
   border-radius: 30px;
   border: 1px solid var(--border-color);
@@ -250,15 +424,15 @@ body .alert.active {
   color: var(--text-color);
   cursor: pointer;
 }
-.products .product .buttons_part #add_favourite i {
+.products .product .buttons_part .add_favourite i {
   margin-right: 5px;
   color: var(--primary-color);
   font-size: 18px;
 }
-.products .product .buttons_part #add_favourite.added i {
+.products .product .buttons_part .add_favourite.added i {
   color: rgb(255, 49, 49);
 }
-.products .product .buttons_part #add_cart {
+.products .product .buttons_part .add_cart {
   padding: 6px 20px;
   border-radius: 30px;
   border: none;
@@ -271,13 +445,39 @@ body .alert.active {
   cursor: pointer;
   font-family: sans-serif;
 }
-.products .product .buttons_part #add_cart i {
+.products .product .buttons_part .add_cart i {
   margin-right: 5px;
   color: var(--second-text-color);
   font-size: 18px;
 }
-.products .product .buttons_part #add_cart.added {
+.products .product .buttons_part .add_cart.added {
   background-color: rgb(68, 177, 65);
+}
+.products .product .buttons_part .edit_btn {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 2px solid var(--border-color);
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: 0.2s;
+}
+.products .product .buttons_part .edit_btn:hover {
+  background-color: var(--hover-color);
+}
+.products .product .buttons_part .delete_btn {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background-color: red;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: 0.2s;
+  color: white;
+  border: none;
+}
+.products .product .buttons_part .delete_btn:hover {
+  background-color: rgb(255, 79, 79);
 }
 
 .products.empty {

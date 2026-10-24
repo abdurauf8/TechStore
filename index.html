@@ -27,7 +27,7 @@
                     <div class="active_theme"></div>
                 </div>
                 <a href="cart.html" class="cart"><i class="fa-solid fa-cart-shopping"><span id="cart_count"></span></i></a>
-                <a href="#" id="login_link">Log in</a>
+                <button id="login_link">Log in</button>
             </div>
             <div class="bars"><i class="fa-solid fa-bars"></i></div>
         </div>
@@ -51,6 +51,47 @@
             </span>
         </div>
     </footer>
+
+    <div class="login_screen">
+        <form class="login_tab">
+            <div class="close_icon"><i class="fa-solid fa-xmark"></i></div>
+            <div class="logo"><img src="src/assets/logo_nav_light.png" alt="" id="login_tab_logo"></div>
+            <h1>Login</h1>
+            
+            <label for="login_input">Login</label>
+            <input type="text" id="login_input" placeholder="Login or email" value="admin" required>
+
+            <label for="password_input">Password</label>
+            <span><input type="password" id="password_input" placeholder="Password" value="admin123" required><i id="eye_icon" class="fa-regular fa-eye"></i></span>
+
+
+            <a href="">Forgot password?</a>
+
+            <button type="submit">Log in</button>
+        </form>
+
+    </div>
+
+    <div class="form_screen">
+        <form class="form_tab">
+            <div class="close_icon"><i class="fa-solid fa-xmark"></i></div>
+            <div class="logo"><img src="src/assets/logo_nav_light.png" alt="" id="form_tab_logo"></div>
+            <div class="img_box"><img id="previewImg" src="" alt=""></div>
+            <label for="product_img_input">Product image</label>
+            <input type="file" id="product_img_input">
+
+            <label for="product_name_input">Product Name</label>
+            <input type="text" id="product_name_input" placeholder="Product name" required>
+
+            <label for="product_price_input">Product price ($)</label>
+            <input type="number" id="product_price_input" placeholder="Product price" required>
+
+            <label for="product_category_input">Category</label>
+            <input type="text" id="product_category_input" placeholder="ex. chone, computer, charger" required>
+
+            <button id="post_btn" type="submit">Add product</button>
+        </form>
+    </div>
 
     <span class="alert"></span>
     <script src="src/main.js"></script>
