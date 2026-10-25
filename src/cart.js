@@ -134,7 +134,7 @@ const renderCart = async () => {
             // Values
             newCheckbox.setAttribute("type", "checkbox");
             newCheckbox.checked = product.checked;
-            newImg.setAttribute("src", `http://localhost:3300${product.img}`);
+            newImg.src = product.img;
             newProductName.textContent = product.name;
             newProductPrice.textContent = `${product.price} $`;
             newInFavourites.innerHTML = `<i class="fa-regular fa-heart"></i>In favourites`;

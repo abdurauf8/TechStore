@@ -13,8 +13,8 @@ cartCount();
 /////////////////// Theme functions
 const themeBtn = document.querySelector('.theme');
 const logo = document.querySelector('#logo');
-const formTabLogo = document.getElementById("form_tab_logo");
-const loginTabLogo = document.getElementById("login_tab_logo");
+const formTabLogo = document.getElementById('form_tab_logo');
+const loginTabLogo = document.getElementById('login_tab_logo');
 
 let currentTheme = localStorage.getItem('theme') || null;
 if (currentTheme === 'dark') {
@@ -81,13 +81,13 @@ const rightNav = document.querySelector('.right_nav');
 const cartLink = document.querySelector('.cart');
 
 let editProductId = null;
-let token = localStorage.getItem("token") || null;
+let token = localStorage.getItem('token') || null;
 let loggedIn = Boolean(token);
 
 const addProductBtn = document.createElement('button');
 const changeNav = () => {
     if (loggedIn) {
-        if (cartLink) cartLink.style.display = "none";
+        if (cartLink) cartLink.style.display = 'none';
         loginLink.textContent = 'Log out';
 
         addProductBtn.style.display = 'flex';
@@ -98,6 +98,7 @@ const changeNav = () => {
 
         addProductBtn.addEventListener('click', () => {
             formScreen.style.display = 'flex';
+            imgInput.setAttribute('required', "");
             editProductId = null;
             previewImg.src = '';
             nameInput.value = '';
@@ -106,15 +107,18 @@ const changeNav = () => {
             postBtn.textContent = 'Add product';
             document.body.style.overflow = 'hidden';
         });
-    }else {
-        addProductBtn.style.display = "none";
+    } else {
+        addProductBtn.style.display = 'none';
         cartLink.style.display = 'flex';
     }
-}
+};
 changeNav();
 
 formScreen.addEventListener('click', (e) => {
-    if (e.target.className === "form_screen" || e.target.closest(".close_icon")){
+    if (
+        e.target.className === 'form_screen' ||
+        e.target.closest('.close_icon')
+    ) {
         formScreen.style.display = 'none';
         document.body.style.overflow = '';
     }
@@ -122,8 +126,6 @@ formScreen.addEventListener('click', (e) => {
 
 //////// Fetch products
 const fetchProducts = async function (role) {
-    
-
     try {
         const res = await fetch('http://localhost:3300/products');
         if (!res.ok) {
@@ -410,10 +412,10 @@ const fetchProducts = async function (role) {
                 newProductName.classList.add('product_name');
                 newProductPrice.classList.add('product_price');
 
-                newImg.setAttribute(
-                    'src',
-                    `http://localhost:3300${product.img}`
-                );
+                newImg.src = product.img;
+                newImg.alt = "Product image";
+
+
                 newProductName.textContent = product.name;
                 newProductPrice.textContent = product.price + ' $';
 
@@ -545,6 +547,7 @@ const fetchProducts = async function (role) {
                         }
                     } else if (e.target.closest('.edit_btn')) {
                         formScreen.style.display = 'flex';
+                        imgInput.removeAttribute('required');
 
                         previewImg.src = `http://localhost:3300${product.img}`;
                         nameInput.value = product.name;
@@ -556,13 +559,22 @@ const fetchProducts = async function (role) {
                         editProductId = product.id;
                     } else if (e.target.closest('.delete_btn')) {
                         async function deleteProduct() {
-                            if (confirm(`${product.name} ni rostdan ham o'chirmoqchimisiz?`)) {
-                                const res = await fetch(`http://localhost:3300/products/${product.id}`,{
+                            if (
+                                confirm(
+                                    `${product.name} ni rostdan ham o'chirmoqchimisiz?`
+                                )
+                            ) {
+                                const res = await fetch(
+                                    `http://localhost:3300/products/${product.id}`,
+                                    {
                                         method: 'DELETE',
                                         header: {},
                                     }
                                 );
-                                if (!res.ok) throw new Error("O'chirish amalga oshmadi.");
+                                if (!res.ok)
+                                    throw new Error(
+                                        "O'chirish amalga oshmadi."
+                                    );
                                 notify("Mahsulot o'chirildi.");
                                 fetchProducts('admin');
                             }
@@ -578,101 +590,101 @@ const fetchProducts = async function (role) {
         notify("Xatolik sodir bo'ldi");
     }
 };
-let arg = loggedIn ? "admin" : "user" ;
+let arg = loggedIn ? 'admin' : 'user';
 fetchProducts(arg);
 
-//////////////////////// Login 
+//////////////////////// Login
 const eye = document.querySelector('#eye_icon');
-const loginInput = document.querySelector("#login_input");
+const loginInput = document.querySelector('#login_input');
 const passwordInput = document.querySelector('#password_input');
 
 loginLink.addEventListener('click', () => {
-    if(!loggedIn){
-        loginScreen.style.display = "flex";
+    if (!loggedIn) {
+        loginScreen.style.display = 'flex';
         document.body.style.overflow = 'hidden';
-    }else {
-        loginLink.textContent = "Log in";
+    } else {
+        loginLink.textContent = 'Log in';
         loggedIn = false;
         token = null;
-        localStorage.removeItem("token");
-        fetchProducts("user");
+        localStorage.removeItem('token');
+        fetchProducts('user');
         changeNav();
     }
-})
+});
 loginScreen.addEventListener('click', (e) => {
-    if (e.target.className === "login_screen" || e.target.closest(".close_icon")){
+    if (
+        e.target.className === 'login_screen' ||
+        e.target.closest('.close_icon')
+    ) {
         loginScreen.style.display = 'none';
         document.body.style.overflow = '';
     }
-})
-window.addEventListener('keydown',(e) => {
-    if(e.key === "Escape"){
+});
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
         loginScreen.style.display = 'none';
         formScreen.style.display = 'none';
         document.body.style.overflow = '';
     }
-})
+});
 eye.addEventListener('click', () => {
-    if(!eye.classList.contains('fa-eye-slash')){
-        passwordInput.type = "text";
+    if (!eye.classList.contains('fa-eye-slash')) {
+        passwordInput.type = 'text';
         eye.classList.remove('fa-eye');
         eye.classList.add('fa-eye-slash');
-    }else{
+    } else {
         passwordInput.type = 'password';
         eye.classList.remove('fa-eye-slash');
         eye.classList.add('fa-eye');
     }
-})
+});
 
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
-        const res = await fetch("http://localhost:3300/login", {
-            method: "POST",
+        const res = await fetch('http://localhost:3300/login', {
+            method: 'POST',
             header: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 login: loginInput.value.trim().toLowerCase(),
                 password: passwordInput.value.trim(),
             }),
         });
-        if(!res.ok) throw new Error("Login muvaffaqiyatsiz.");
+        if (!res.ok) throw new Error('Login muvaffaqiyatsiz.');
         const data = await res.json();
-        localStorage.setItem("token", data.token)
+        localStorage.setItem('token', data.token);
         token = data.token;
         loggedIn = true;
-        loginLink.textContent = "Log out";
-        loginScreen.style.display = "none";
+        loginLink.textContent = 'Log out';
+        loginScreen.style.display = 'none';
         document.body.style.overflow = '';
 
         changeNav();
-        fetchProducts("admin");
+        fetchProducts('admin');
     } catch (err) {
-        console.log("Xatolik: ", err.message);
-        notify("Xatolik sodir bo'ldi.")
+        console.log('Xatolik: ', err.message);
+        notify("Xatolik sodir bo'ldi.");
     }
-})
+});
 ////////////////////////// POST, PUT, DELETE
 postForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
         if (!editProductId) {
-            if(imgInput.files.length < 1) {
-                notify("Mahsulot suratini yuklang!!!");
-                return;
-            }
-            const formData = new FormData();
-            formData.append('name', nameInput.value);
-            formData.append('category', categoryInput.value);
-            formData.append('price', priceInput.value);
-            if (imgInput.files[0]) {
-                formData.append('img', imgInput.files[0]);
-            }
-
             const res = await fetch(`http://localhost:3300/products`, {
                 method: 'POST',
-                body: formData,
+                headers: {
+                    "Content-Type": "application/json",
+                    "token": token,
+                },
+                body: JSON.stringify({
+                    name: nameInput.value,
+                    category: categoryInput.value,
+                    price: priceInput.value,
+                    img: imgInput.value,
+                }),
             });
             if (!res.ok) throw new Error("Mahsulot qo'shilmadi.");
             const data = await res.json();
@@ -688,19 +700,12 @@ postForm.addEventListener('submit', async (e) => {
 
             fetchProducts('admin');
         } else {
-            const formData = new FormData();
-            formData.append('name', nameInput.value);
-            formData.append('category', categoryInput.value);
-            formData.append('price', priceInput.value);
-            if (imgInput.files[0]) {
-                formData.append('img', imgInput.files[0]);
-            }
 
             const res = await fetch(
                 `http://localhost:3300/products/${editProductId}`,
                 {
                     method: 'PUT',
-                    body: formData,
+                    // body: ,
                 }
             );
             if (!res.ok) throw new Error('Mahsulot yangilanmadi.');

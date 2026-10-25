@@ -77,8 +77,8 @@
             <div class="close_icon"><i class="fa-solid fa-xmark"></i></div>
             <div class="logo"><img src="src/assets/logo_nav_light.png" alt="" id="form_tab_logo"></div>
             <div class="img_box"><img id="previewImg" src="" alt=""></div>
-            <label for="product_img_input">Product image</label>
-            <input type="file" id="product_img_input">
+            <label for="product_img_input">Product image (URL)</label>
+            <input type="url" id="product_img_input" required placeholder="Enter URL of image">
 
             <label for="product_name_input">Product Name</label>
             <input type="text" id="product_name_input" placeholder="Product name" required>
@@ -87,7 +87,7 @@
             <input type="number" id="product_price_input" placeholder="Product price" required>
 
             <label for="product_category_input">Category</label>
-            <input type="text" id="product_category_input" placeholder="ex. chone, computer, charger" required>
+            <input type="text" id="product_category_input" placeholder="ex. phone, computer, charger" required>
 
             <button id="post_btn" type="submit">Add product</button>
         </form>
