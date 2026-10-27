@@ -79,7 +79,22 @@ const server = createServer((req, res) => {
                 });
                 
             } else if (req.method === 'PUT') {
-                console.log("put sorovi keldi");
+                const productId = req.url.split('/')[2];
+
+                 let body = "";
+
+                req.on("data", (chunk) => {
+                    body += chunk;
+                });
+
+                req.on("end", () => {
+                    const product = JSON.parse(body);
+                    
+                    manager.updateProduct(Number(productId), product.name, product.category, product.price, product.img);
+
+                    res.writeHead(200);
+                    res.end(JSON.stringify({...product, holat: "mahsulot yangilandi"}));
+                });
                 
             } else if (req.method === "DELETE") {
                 const productId = req.url.split('/')[2];

@@ -98,8 +98,9 @@ const changeNav = () => {
 
         addProductBtn.addEventListener('click', () => {
             formScreen.style.display = 'flex';
-            imgInput.setAttribute('required', "");
+            imgInput.setAttribute('required', '');
             editProductId = null;
+            imgInput.value = '';
             previewImg.src = '';
             nameInput.value = '';
             priceInput.value = '';
@@ -114,15 +115,7 @@ const changeNav = () => {
 };
 changeNav();
 
-formScreen.addEventListener('click', (e) => {
-    if (
-        e.target.className === 'form_screen' ||
-        e.target.closest('.close_icon')
-    ) {
-        formScreen.style.display = 'none';
-        document.body.style.overflow = '';
-    }
-});
+
 
 //////// Fetch products
 const fetchProducts = async function (role) {
@@ -346,9 +339,51 @@ const fetchProducts = async function (role) {
                 const newImgPart = document.createElement('div');
                 const newInfoPart = document.createElement('div');
                 const newBtnsPart = document.createElement('div');
+                const newAdminBtnsPart = document.createElement('div');
+                if (role !== 'admin') newAdminBtnsPart.remove();
                 const newImg = document.createElement('img');
                 const newProductName = document.createElement('p');
                 const newProductPrice = document.createElement('h3');
+
+                const newAddFavouriteBtn = document.createElement('button');
+                const newAddCartBtn = document.createElement('button');
+                const newFavouriteI = document.createElement('i');
+                const newCartI = document.createElement('i');
+
+                newAddFavouriteBtn.classList.add('add_favourite');
+                newAddCartBtn.classList.add('add_cart');
+                newFavouriteI.classList.add('fa-regular', 'fa-heart');
+                newCartI.classList.add('fa-solid', 'fa-cart-plus');
+
+                newAddFavouriteBtn.textContent = 'Favourite';
+                newAddCartBtn.textContent = 'Add to cart';
+
+                newAddFavouriteBtn.prepend(newFavouriteI);
+                newAddCartBtn.prepend(newCartI);
+                newBtnsPart.append(newAddFavouriteBtn, newAddCartBtn);
+
+                // Rendering add cart btns at current state
+                const currentCart = JSON.parse(localStorage.getItem('cart'));
+                if (currentCart) {
+                    for (let p of currentCart.cart) {
+                        if (product.id === p.id) {
+                            newAddCartBtn.classList.add('added');
+                            newAddCartBtn.innerHTML = `<i class="fa-solid fa-cart-arrow-down"></i> Added`;
+                        }
+                    }
+                }
+                // Rendering add favourite btns at current state
+                const currentFavourites = JSON.parse(
+                    localStorage.getItem('favourites')
+                );
+                if (currentFavourites) {
+                    for (let p of currentFavourites.favourites) {
+                        if (product.id === p.id) {
+                            newAddFavouriteBtn.classList.add('added');
+                            newAddFavouriteBtn.innerHTML = `<i class="fa-solid fa-heart"></i> Favourited`;
+                        }
+                    }
+                }
 
                 if (role === 'admin') {
                     const newEditBtn = document.createElement('button');
@@ -360,49 +395,8 @@ const fetchProducts = async function (role) {
                     newEditBtn.classList.add('edit_btn');
                     newDeleteBtn.classList.add('delete_btn');
 
-                    newBtnsPart.append(newEditBtn, newDeleteBtn);
-                } else if (role === 'user') {
-                    const newAddFavouriteBtn = document.createElement('button');
-                    const newAddCartBtn = document.createElement('button');
-                    const newFavouriteI = document.createElement('i');
-                    const newCartI = document.createElement('i');
-
-                    newAddFavouriteBtn.classList.add('add_favourite');
-                    newAddCartBtn.classList.add('add_cart');
-                    newFavouriteI.classList.add('fa-regular', 'fa-heart');
-                    newCartI.classList.add('fa-solid', 'fa-cart-plus');
-
-                    newAddFavouriteBtn.textContent = 'Favourite';
-                    newAddCartBtn.textContent = 'Add to cart';
-
-                    newAddFavouriteBtn.prepend(newFavouriteI);
-                    newAddCartBtn.prepend(newCartI);
-                    newBtnsPart.append(newAddFavouriteBtn, newAddCartBtn);
-
-                    // Rendering add cart btns at current state
-                    const currentCart = JSON.parse(
-                        localStorage.getItem('cart')
-                    );
-                    if (currentCart) {
-                        for (let p of currentCart.cart) {
-                            if (product.id === p.id) {
-                                newAddCartBtn.classList.add('added');
-                                newAddCartBtn.innerHTML = `<i class="fa-solid fa-cart-arrow-down"></i> Added`;
-                            }
-                        }
-                    }
-                    // Rendering add favourite btns at current state
-                    const currentFavourites = JSON.parse(
-                        localStorage.getItem('favourites')
-                    );
-                    if (currentFavourites) {
-                        for (let p of currentFavourites.favourites) {
-                            if (product.id === p.id) {
-                                newAddFavouriteBtn.classList.add('added');
-                                newAddFavouriteBtn.innerHTML = `<i class="fa-solid fa-heart"></i> Favourited`;
-                            }
-                        }
-                    }
+                    newAdminBtnsPart.classList.add('admin_buttons_part');
+                    newAdminBtnsPart.append(newEditBtn, newDeleteBtn);
                 }
 
                 newProduct.classList.add('product');
@@ -413,8 +407,7 @@ const fetchProducts = async function (role) {
                 newProductPrice.classList.add('product_price');
 
                 newImg.src = product.img;
-                newImg.alt = "Product image";
-
+                newImg.alt = 'Product image';
 
                 newProductName.textContent = product.name;
                 newProductPrice.textContent = product.price + ' $';
@@ -422,7 +415,12 @@ const fetchProducts = async function (role) {
                 newImgPart.append(newImg);
                 newInfoPart.append(newProductName, newProductPrice);
 
-                newProduct.append(newImgPart, newInfoPart, newBtnsPart);
+                newProduct.append(
+                    newImgPart,
+                    newInfoPart,
+                    newBtnsPart,
+                    newAdminBtnsPart
+                );
                 fragment.append(newProduct);
 
                 // Product buttons events
@@ -547,9 +545,11 @@ const fetchProducts = async function (role) {
                         }
                     } else if (e.target.closest('.edit_btn')) {
                         formScreen.style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
                         imgInput.removeAttribute('required');
 
-                        previewImg.src = `http://localhost:3300${product.img}`;
+                        imgInput.value = '';
+                        previewImg.src = product.img;
                         nameInput.value = product.name;
                         priceInput.value = product.price;
                         categoryInput.value = product.category;
@@ -668,6 +668,16 @@ loginForm.addEventListener('submit', async (e) => {
         notify("Xatolik sodir bo'ldi.");
     }
 });
+////////////////////////// Form
+formScreen.addEventListener('click', (e) => {
+    if (
+        e.target.className === 'form_screen' ||
+        e.target.closest('.close_icon')
+    ) {
+        formScreen.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+});
 ////////////////////////// POST, PUT, DELETE
 postForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -676,8 +686,8 @@ postForm.addEventListener('submit', async (e) => {
             const res = await fetch(`http://localhost:3300/products`, {
                 method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
-                    "token": token,
+                    'Content-Type': 'application/json',
+                    token: token,
                 },
                 body: JSON.stringify({
                     name: nameInput.value,
@@ -700,12 +710,20 @@ postForm.addEventListener('submit', async (e) => {
 
             fetchProducts('admin');
         } else {
-
             const res = await fetch(
                 `http://localhost:3300/products/${editProductId}`,
                 {
                     method: 'PUT',
-                    // body: ,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        token: token,
+                    },
+                    body: JSON.stringify({
+                        name: nameInput.value,
+                        category: categoryInput.value,
+                        price: priceInput.value,
+                        img: imgInput.value,
+                    }),
                 }
             );
             if (!res.ok) throw new Error('Mahsulot yangilanmadi.');
@@ -728,5 +746,15 @@ postForm.addEventListener('submit', async (e) => {
     } catch (err) {
         console.log('Xatolik:', err.message);
         notify("Xatolik sodir bo'ldi.");
+    }
+});
+
+///////////// 
+imgInput.addEventListener('input', () => {
+    const isValid = /^https:\/\/.+\.(jpg|jpeg|png|webp|gif|svg)$/i.test(
+        imgInput.value
+    );
+    if (isValid) {
+        previewImg.src = imgInput.value;
     }
 });

@@ -477,8 +477,10 @@ body {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 15px;
 
             .add_favourite {
+                flex: 1;
                 padding: 6px 10px;
                 border-radius: 30px;
                 border: 1px solid var(--border-color);
@@ -487,12 +489,16 @@ body {
                 align-items: center;
                 color: var(--text-color);
                 cursor: pointer;
+                transition: 0.2s;
 
                 i {
                     margin-right: 5px;
                     color: var(--primary-color);
                     font-size: 18px;
                 }
+            }
+            .add_favourite:hover{
+                background-color: var(--hover-color);
             }
 
             .add_favourite.added {
@@ -502,17 +508,20 @@ body {
             }
 
             .add_cart {
-                padding: 6px 20px;
+                flex: 1;
+                padding: 6px 10px;
                 border-radius: 30px;
                 border: none;
                 background-color: var(--primary-color);
                 color: var(--second-text-color);
                 display: flex;
                 align-items: center;
+                justify-content: center;
                 flex-wrap: nowrap;
                 white-space: nowrap;
                 cursor: pointer;
                 font-family: sans-serif;
+                transition: 0.2s;
 
                 i {
                     margin-right: 5px;
@@ -520,12 +529,24 @@ body {
                     font-size: 18px;
                 }
             }
+            .add_cart:hover{
+                background-color: var(--primary-hover);
+            }
 
             .add_cart.added {
                 background-color: rgb(68, 177, 65);
             }
 
+        }
+        .admin_buttons_part{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 20px;
+
             .edit_btn {
+                flex: 1;
                 padding: 6px 10px;
                 border-radius: 10px;
                 border: 2px solid var(--border-color);
@@ -534,25 +555,28 @@ body {
                 cursor: pointer;
                 transition: 0.2s;
             }
-
+    
             .edit_btn:hover {
                 background-color: var(--hover-color);
             }
-
+    
             .delete_btn {
+                flex: 1;
                 padding: 6px 10px;
                 border-radius: 10px;
-                border: 1px solid var(--border-color);
-                background-color: red;
+                border: 1px solid red;
+                background-color: transparent;
                 color: var(--text-color);
                 cursor: pointer;
                 transition: 0.2s;
-                color: white;
-                border: none;
+                color: red;
+                // border: none;
             }
-
+    
             .delete_btn:hover {
-                background-color: rgb(255, 79, 79);
+                // background-color: rgb(255, 79, 79);
+                background-color: red;
+                color: white;
             }
         }
     }
@@ -578,6 +602,10 @@ body {
         border: 1px solid var(--border-color);
         font-size: 18px;
         cursor: pointer;
+        transition: 0.2s;
+    }
+    li:hover{
+        background-color: var(--hover-color);
     }
 
     li.active {
@@ -701,7 +729,12 @@ footer {
         }
     }
 
-    .buttons_part {
+    .product button{
+        width: 100%;
+        justify-content: center;
+    }
+
+    .buttons_part, .admin_buttons_part {
         flex-direction: column;
         gap: 10px;
         align-items: start !important;
