@@ -59,8 +59,8 @@ Base URL: `http://localhost:3300`
 
 ## Screenshot
 
-![TechStore Homepage(light)](./screenshot(2).png)
-![TechStore Homepage(dark)](./screenshot.png)
+![TechStore Homepage(light)](./screenshot(2).PNG)
+![TechStore Homepage(dark)](./screenshot.PNG)
 
 ## Author: Abdurauf.
 GitHub: [abdurauf8](https://github.com/abdurauf8)
