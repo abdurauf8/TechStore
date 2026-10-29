@@ -570,7 +570,7 @@ const fetchProducts = async function (role) {
                                         method: 'DELETE',
                                         headers: {
                                             'Content-Type': 'application/json',
-                                            'token': `Bearer ${localStorage.getItem("token")}`,
+                                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
                                         },
                                     }
                                 );
@@ -692,7 +692,7 @@ postForm.addEventListener('submit', async (e) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    token: `Bearer ${localStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
                 body: JSON.stringify({
                     name: nameInput.value,
@@ -720,7 +720,7 @@ postForm.addEventListener('submit', async (e) => {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        token: `Bearer ${localStorage.getItem('token')}`,
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     },
                     body: JSON.stringify({
                         name: nameInput.value,
