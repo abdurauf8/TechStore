@@ -54,6 +54,17 @@ const manager = new ProductManager(data);
 
 class ValidationError extends Error {};
 
+const getToken = (req) => {
+    const auth = req.headers["authorization"];
+    if(!auth) return null;
+
+    const {type, token} = auth.split(" ");
+    if(type !== "Bearer" || !token) return null;
+    return token;
+};
+
+const token = 'abd34sd34';
+
 const server = createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
@@ -75,6 +86,12 @@ const server = createServer((req, res) => {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify(manager.getAll()));
             } else if (req.method === 'POST') {
+                if(getToken(req) !== token) {
+                    res.writeHead(401, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ holat: "Unauthorized.(Token yo'q)"}))
+                    return;
+                };
+
                 let body = '';
 
                 req.on('data', (chunk) => {
@@ -125,6 +142,12 @@ const server = createServer((req, res) => {
                     }
                 });
             } else if (req.method === 'PUT') {
+                if(getToken(req) !== token) {
+                    res.writeHead(401, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ holat: "Unauthorized.(Token yo'q)"}))
+                    return;
+                };
+
                 const productId = req.url.split('/')[2];
 
                 let body = '';
@@ -189,6 +212,12 @@ const server = createServer((req, res) => {
                     }
                 });
             } else if (req.method === 'DELETE') {
+                if(getToken(req) !== token) {
+                    res.writeHead(401, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ holat: "Unauthorized.(Token yo'q)"}))
+                    return;
+                };
+
                 const productId = req.url.split('/')[2];
                 
                 if(manager.deleteProduct(productId)) {
@@ -205,7 +234,6 @@ const server = createServer((req, res) => {
                 res.end(JSON.stringify({ holat: "Noto'g'ri method." }));
             }
         } else if (req.url.startsWith('/login') && req.method === 'POST') {
-            let token = 'abd34sd34';
             let body = '';
 
             req.on('data', (chunk) => {
