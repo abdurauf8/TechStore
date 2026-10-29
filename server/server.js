@@ -25,6 +25,7 @@ class ProductManager {
         addingProduct.img = product.img.trim();
 
         this.data.push(addingProduct);
+        return addingProduct;
     }
 
     updateProduct(product) {
@@ -58,7 +59,7 @@ const getToken = (req) => {
     const auth = req.headers["authorization"];
     if(!auth) return null;
 
-    const {type, token} = auth.split(" ");
+    const [type, token] = auth.split(" ");
     if(type !== "Bearer" || !token) return null;
     return token;
 };
@@ -103,7 +104,7 @@ const server = createServer((req, res) => {
                         const product = JSON.parse(body);
 
                         // URL validation
-                        if(!/^https:\/\/.+\.(jpg|jpeg|png|webp|gif|svg)$/i.test(product.img.trim())) throw new ValidationError("Rasm manzili noto'g'ri.");
+                        if(typeof product.img !== "string" || !/^https:\/\/.+\.(jpg|jpeg|png|webp|gif|svg)$/i.test(product.img.trim())) throw new ValidationError("Rasm manzili noto'g'ri.");
                         // Name validation
                         if(typeof product.name !=="string" || product.name.trim().length === 0) throw new ValidationError("Ism noto'g'ri kiritildi.");
                         if(product.name.trim().length < 2) throw new ValidationError("Ism juda qisqa.");
@@ -117,11 +118,11 @@ const server = createServer((req, res) => {
                         if(product.category.trim().length > 20) throw new ValidationError("Category juda uzun.");
                         if(!/^[a-zA-Z]{3,20}$/.test(product.category.trim())) throw new ValidationError("Category noto'g'ri kiritildi.");
 
-                        manager.addProduct(product);
+                        const added = manager.addProduct(product);
                         
-                        console.log("Qo'shildi: ", product);
+                        console.log("Qo'shildi: ", added);
                         res.writeHead(201, { 'Content-Type': 'application/json' });
-                        res.end( JSON.stringify({...product, holat: "yangi mahsulot qo'shildi",}));
+                        res.end( JSON.stringify({...added, holat: "yangi mahsulot qo'shildi",}));
                     }catch (err) {
                         console.log(err.message);
                         
@@ -131,7 +132,7 @@ const server = createServer((req, res) => {
                            status = 400;
                            holat = "noto'g'ri JSON";
                         } else if (err instanceof ValidationError){
-                           status = 422;
+                           status = 400;
                            holat = err.message;
                         } else {
                            status = 500;
@@ -163,15 +164,15 @@ const server = createServer((req, res) => {
                         product.id = productId;
 
                         // URL validation
-                        if(product.img.length > 0){
-                            if(!/^https:\/\/.+\.(jpg|jpeg|png|webp|gif|svg)$/i.test(product.img.trim())) throw new ValidationError("Rasm manzili noto'g'ri.");
+                        if(product.img !== undefined && product.img !== ''){
+                            if(typeof product.img !== "string" || !/^https:\/\/.+\.(jpg|jpeg|png|webp|gif|svg)$/i.test(product.img.trim())) throw new ValidationError("Rasm manzili noto'g'ri.");
                         };
                         // Name validation
                         if(typeof product.name !=="string" || product.name.trim().length === 0) throw new ValidationError("Ism noto'g'ri kiritildi.");
                         if(product.name.trim().length < 2) throw new ValidationError("Ism juda qisqa.");
                         if(product.name.trim().length > 100) throw new ValidationError("Ism juda uzun.");
                         // Price validation
-                        if(Number(product.price) < 1 || Number(product.price) > 20000) throw new ValidationError("Narx noto'g'ri.");
+                        if(!Number.isFinite(product.price) || Number(product.price) < 1 || Number(product.price) > 20000) throw new ValidationError("Narx noto'g'ri.");
                         // Category validation
                         if(typeof product.category !=="string" || product.category.trim().length === 0) throw new ValidationError("Category noto'g'ri kiritildi.");
                         if(product.category.trim().length < 2) throw new ValidationError("Category juda qisqa.");
@@ -201,7 +202,7 @@ const server = createServer((req, res) => {
                             status = 400;
                             holat = "noto'g'ri JSON";
                          } else if (err instanceof ValidationError){
-                            status = 422;
+                            status = 400;
                             holat = err.message;
                          } else {
                             status = 500;
@@ -265,7 +266,7 @@ const server = createServer((req, res) => {
                 } catch (err) {
                     console.log(err.message);
                     res.writeHead(400, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({holat: "noto'g'ti JSON"}))
+                    res.end(JSON.stringify({holat: "noto'g'ri JSON"}))
                 }
             });
         } else {

@@ -697,7 +697,7 @@ postForm.addEventListener('submit', async (e) => {
                 body: JSON.stringify({
                     name: nameInput.value,
                     category: categoryInput.value,
-                    price: priceInput.value,
+                    price: Number(priceInput.value),
                     img: imgInput.value,
                 }),
             });
@@ -725,13 +725,13 @@ postForm.addEventListener('submit', async (e) => {
                     body: JSON.stringify({
                         name: nameInput.value,
                         category: categoryInput.value,
-                        price: priceInput.value,
+                        price: Number(priceInput.value),
                         img: imgInput.value,
                     }),
                 }
             );
             const data = await res.json();
-            if (!res.ok) throw new Error(err.message);
+            if (!res.ok) throw new Error(data.holat);
             notify('Mahsulot yangilandi.');
 
             nameInput.value = '';
