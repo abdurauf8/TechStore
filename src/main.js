@@ -568,7 +568,10 @@ const fetchProducts = async function (role) {
                                     `http://localhost:3300/products/${product.id}`,
                                     {
                                         method: 'DELETE',
-                                        header: {},
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            'token': token
+                                        },
                                     }
                                 );
                                 if (!res.ok)
@@ -644,7 +647,7 @@ loginForm.addEventListener('submit', async (e) => {
     try {
         const res = await fetch('http://localhost:3300/login', {
             method: 'POST',
-            header: {
+            headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -652,7 +655,9 @@ loginForm.addEventListener('submit', async (e) => {
                 password: passwordInput.value.trim(),
             }),
         });
-        if (!res.ok) throw new Error('Login muvaffaqiyatsiz.');
+        if (!res.ok) {
+            throw new Error('Login muvaffaqiyatsiz.');
+        }
         const data = await res.json();
         localStorage.setItem('token', data.token);
         token = data.token;
@@ -665,7 +670,7 @@ loginForm.addEventListener('submit', async (e) => {
         fetchProducts('admin');
     } catch (err) {
         console.log('Xatolik: ', err.message);
-        notify("Xatolik sodir bo'ldi.");
+        notify(err.message);
     }
 });
 ////////////////////////// Form
@@ -696,9 +701,8 @@ postForm.addEventListener('submit', async (e) => {
                     img: imgInput.value,
                 }),
             });
-            if (!res.ok) throw new Error("Mahsulot qo'shilmadi.");
             const data = await res.json();
-            console.log(data);
+            if (!res.ok) throw new Error(data.holat);
             notify("Yangi mahsulot qo'shildi.");
 
             nameInput.value = '';
@@ -726,9 +730,8 @@ postForm.addEventListener('submit', async (e) => {
                     }),
                 }
             );
-            if (!res.ok) throw new Error('Mahsulot yangilanmadi.');
             const data = await res.json();
-            console.log(data);
+            if (!res.ok) throw new Error(err.message);
             notify('Mahsulot yangilandi.');
 
             nameInput.value = '';
@@ -745,7 +748,7 @@ postForm.addEventListener('submit', async (e) => {
         }
     } catch (err) {
         console.log('Xatolik:', err.message);
-        notify("Xatolik sodir bo'ldi.");
+        notify(err.message);
     }
 });
 

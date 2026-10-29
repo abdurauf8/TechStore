@@ -11,35 +11,48 @@ class ProductManager {
     }
 
     getById(productId) {
-        return this.data.find((p) => p.id === Number(productId));
+        return this.data.find((p) => p.id === parseInt(productId));
     }
 
-    addProduct(product){
-        this.data.push(product);
+    addProduct(product) {
+        const addingProduct = {
+            id: this.createNewId(),
+        };
+
+        addingProduct.name = product.name.trim();
+        addingProduct.category = product.category.trim().toLowerCase();
+        addingProduct.price = Number(product.price);
+        addingProduct.img = product.img.trim();
+
+        this.data.push(addingProduct);
     }
 
-    updateProduct(prId, newName, newCategory, newPrice, newImgAddress = null){
-        const index = this.data.findIndex(p => p.id === prId);
-        if(index === -1) return false;
-        this.data[index].name = newName;
-        this.data[index].category = newCategory;
-        this.data[index].price = newPrice;
-        if(newImgAddress) this.data[index].img = newImgAddress;
+    updateProduct(product) {
+        const index = this.data.findIndex((p) => p.id === parseInt(product.id));
+        if (index === -1) return false;
+        this.data[index].name = product.name.trim();
+        this.data[index].category = product.category.trim().toLowerCase();
+        this.data[index].price = Number(product.price);
+        if (product.img) this.data[index].img = product.img.trim();
+        return true;
     }
 
     deleteProduct(productId) {
         const index = this.data.findIndex((p) => p.id === parseInt(productId));
-        if (index !== -1) {
-            this.data.splice(index, 1);
-        }
+        if (index === -1) return false;
+        this.data.splice(index, 1);
+        return true;
     }
 
-    createNewId(){
-        return this.data.length ? Math.max(...this.data.map((p) => p.id)) + 1 : 1;
+    createNewId() {
+        return this.data.length
+            ? Math.max(...this.data.map((p) => p.id)) + 1
+            : 1;
     }
 }
-
 const manager = new ProductManager(data);
+
+class ValidationError extends Error {};
 
 const server = createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -59,85 +72,180 @@ const server = createServer((req, res) => {
             console.log("'/products' ga so'rov keldi.");
 
             if (req.method === 'GET') {
-                res.writeHead(200);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify(manager.getAll()));
             } else if (req.method === 'POST') {
-                let body = "";
+                let body = '';
 
-                req.on("data", (chunk) => {
+                req.on('data', (chunk) => {
                     body += chunk;
                 });
 
-                req.on("end", () => {
-                    const product = JSON.parse(body);
+                req.on('end', () => {
+                    try {
+                        const product = JSON.parse(body);
 
-                    product.id = manager.createNewId();
-                    manager.addProduct(product);
+                        // URL validation
+                        if(!/^https:\/\/.+\.(jpg|jpeg|png|webp|gif|svg)$/i.test(product.img.trim())) throw new ValidationError("Rasm manzili noto'g'ri.");
+                        // Name validation
+                        if(product.name.trim().length === 0) throw new ValidationError("Ism noto'g'ri kiritildi.");
+                        if(product.name.trim().length < 2) throw new ValidationError("Ism juda qisqa.");
+                        if(product.name.trim().length > 100) throw new ValidationError("Ism juda uzun.");
+                        // Price validation
+                        if(Number(product.price) < 1 || Number(product.price) > 20000) throw new ValidationError("Narx noto'g'ri.");
+                        // Category validation
+                        if(product.category.trim().length === 0) throw new ValidationError("Category noto'g'ri kiritildi.");
+                        if(product.category.trim().length < 2) throw new ValidationError("Category juda qisqa.");
+                        if(product.category.trim().length > 20) throw new ValidationError("Category juda uzun.");
+                        if(!/^[a-zA-Z]{3,20}$/.test(product.category.trim())) throw new ValidationError("Category noto'g'ri kiritildi.");
 
-                    res.writeHead(201);
-                    res.end(JSON.stringify({...product, holat: "yangi mahsulot qo'shildi"}));
+                        manager.addProduct(product);
+                        
+                        console.log("Qo'shildi: ", product);
+                        res.writeHead(201, { 'Content-Type': 'application/json' });
+                        res.end( JSON.stringify({...product, holat: "yangi mahsulot qo'shildi",}));
+                    }catch (err) {
+                        console.log(err.message);
+                        
+                        let status, holat;
+
+                        if(err instanceof SyntaxError){
+                           status = 400;
+                           holat = "noto'g'ri JSON";
+                        } else if (err instanceof ValidationError){
+                           status = 422;
+                           holat = err.message;
+                        } else {
+                           status = 500;
+                           holat = "Server xatosi";
+                        }
+
+                        res.writeHead(status, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ holat: holat }));
+                    }
                 });
-                
             } else if (req.method === 'PUT') {
                 const productId = req.url.split('/')[2];
 
-                 let body = "";
+                let body = '';
 
-                req.on("data", (chunk) => {
+                req.on('data', (chunk) => {
                     body += chunk;
                 });
 
-                req.on("end", () => {
-                    const product = JSON.parse(body);
-                    
-                    manager.updateProduct(Number(productId), product.name, product.category, product.price, product.img);
+                req.on('end', () => {
+                    try {
+                        const product = JSON.parse(body);
+                        product.id = productId;
 
-                    res.writeHead(200);
-                    res.end(JSON.stringify({...product, holat: "mahsulot yangilandi"}));
-                });
-                
-            } else if (req.method === "DELETE") {
-                const productId = req.url.split('/')[2];
-                const product = manager.getById(productId);
-                if(!product){
-                    res.writeHead(404);
-                    res.end(JSON.stringify({ holat: "mahsulot topilmadi" }));
-                    return;
-                }
-                manager.deleteProduct(productId);
-                
-                res.writeHead(200);
-                res.end(JSON.stringify({holat: "mahsulot o'chirildi"}));
-            }
+                        // URL validation
+                        if(product.img.length > 0){
+                            if(!/^https:\/\/.+\.(jpg|jpeg|png|webp|gif|svg)$/i.test(product.img.trim())) throw new ValidationError("Rasm manzili noto'g'ri.");
+                        };
+                        // Name validation
+                        if(product.name.trim().length === 0) throw new ValidationError("Ism noto'g'ri kiritildi.");
+                        if(product.name.trim().length < 2) throw new ValidationError("Ism juda qisqa.");
+                        if(product.name.trim().length > 100) throw new ValidationError("Ism juda uzun.");
+                        // Price validation
+                        if(Number(product.price) < 1 || Number(product.price) > 20000) throw new ValidationError("Narx noto'g'ri.");
+                        // Category validation
+                        if(product.category.trim().length === 0) throw new ValidationError("Category noto'g'ri kiritildi.");
+                        if(product.category.trim().length < 2) throw new ValidationError("Category juda qisqa.");
+                        if(product.category.trim().length > 20) throw new ValidationError("Category juda uzun.");
+                        if(!/^[a-zA-Z]{3,20}$/.test(product.category.trim())) throw new ValidationError("Category noto'g'ri kiritildi.");
 
-        }else if(req.url.startsWith("/login")) {
-            if(req.method === "POST"){
-                let token = "abd34sd34";
-                let body ="";
+                        if(manager.updateProduct(product)){
+                            console.log("Yangilandi: ", manager.getById(productId));
+                            res.writeHead(200, { 'Content-Type': 'application/json' });
+                            res.end(
+                                JSON.stringify({
+                                    ...manager.getById(productId),
+                                    holat: 'mahsulot yangilandi',
+                                })
+                            );
+                        }else {
+                             res.writeHead(404, { 'Content-Type': 'application/json' });
+                             res.end(JSON.stringify({ holat: "Mahsulot topilmadi." }));
+                        }
 
-                req.on("data", (chunk) => {
-                    body += chunk; 
-                })
-                req.on("end", () => {
-                    const { login, password } = JSON.parse(body);
-                    console.log(login, password);
-                    
-                    if(login === "admin" && password === "admin123"){
-                        res.writeHead(200);
-                        res.end(JSON.stringify({holat: "muvaffaqiyatli", token: token}));
-                    }else {
-                        res.writeHead(401);
-                        res.end(JSON.stringify({holat: "kiritilgan ma'lumot noto'g'ri"}));
+                    }catch (err) {
+                         console.log(err.message);
+                         
+                         let status, holat;
+
+                         if(err instanceof SyntaxError){
+                            status = 400;
+                            holat = "noto'g'ri JSON";
+                         } else if (err instanceof ValidationError){
+                            status = 422;
+                            holat = err.message;
+                         } else {
+                            status = 500;
+                            holat = "Server xatosi";
+                         }
+
+                         res.writeHead(status, { 'Content-Type': 'application/json' });
+                         res.end(JSON.stringify({ holat: holat }));
                     }
-                })
-            }
+                });
+            } else if (req.method === 'DELETE') {
+                const productId = req.url.split('/')[2];
+                
+                if(manager.deleteProduct(productId)) {
+                    console.log("O'chirildi: ", manager.getById(productId));
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ holat: "mahsulot o'chirildi" }));
+                }else{
+                    res.writeHead(404, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ holat: "mahsulot topilmadi." }));
+                }
 
+            } else{
+                res.writeHead(501, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ holat: "Noto'g'ri method." }));
+            }
+        } else if (req.url.startsWith('/login') && req.method === 'POST') {
+            let token = 'abd34sd34';
+            let body = '';
+
+            req.on('data', (chunk) => {
+                body += chunk;
+            });
+            req.on('end', () => {
+                try {
+                    const { login, password } = JSON.parse(body);
+
+                    if (login === 'admin' && password === 'admin123') {
+                        console.log("Yangi login (admin).");
+                        res.writeHead(200, { 'Content-Type': 'application/json' });
+                        res.end(
+                            JSON.stringify({
+                                holat: 'muvaffaqiyatli login',
+                                token: token,
+                            })
+                        );
+                    } else {
+                        res.writeHead(401, { 'Content-Type': 'application/json' });
+                        res.end(
+                            JSON.stringify({
+                                holat: "Login yoki parol noto'g'ri",
+                            })
+                        );
+                    }
+                } catch (err) {
+                    console.log(err.message);
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({holat: "noto'g'ti JSON"}))
+                }
+            });
         } else {
-            res.writeHead(404);
+            res.writeHead(404, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ holat: "Noto'g'ri URL" }));
         }
     } catch (err) {
         console.log('Xatolik:', err.message);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({holat: "server xatosi"}));
     }
 });
 
