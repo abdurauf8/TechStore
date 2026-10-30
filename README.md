@@ -32,10 +32,6 @@ Vite will display the local frontend URL in the terminal, usually:
 
 Open the displayed URL in your browser.
 
-### 5. | POST | `/login` | Log in as admin, returns a token |
-**Auth:** POST, PUT and DELETE require the header `Authorization: Bearer <token>`.
-Admin login: `admin` / `admin123`
-
 ## API Endpoints
 Base URL: `http://localhost:3300`
 
@@ -45,6 +41,10 @@ Base URL: `http://localhost:3300`
 | POST | `/products` | Add a new product |
 | PUT | `/products/:id` | Update an existing product |
 | DELETE | `/products/:id` | Delete a product |
+| POST | `/login` | Log in as admin, returns a token |
+
+**Auth:** POST, PUT and DELETE require the header `Authorization: Bearer <token>`.
+Admin login: `admin` / `admin123`
 
 **Note:** Product data is stored in a JavaScript array in memory. Changes are not permanently saved and reset when the backend server restarts.
 
@@ -65,6 +65,9 @@ Base URL: `http://localhost:3300`
 
 ![TechStore Homepage(light)](./screenshot-light.PNG)
 ![TechStore Homepage(dark)](./screenshot-dark.PNG)
+
+**Live demo:** https://tech-store-peach.vercel.app
+**API:** https://techstore-jd2m.onrender.com
 
 ## Author: Abdurauf.
 GitHub: [abdurauf8](https://github.com/abdurauf8)
