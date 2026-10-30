@@ -6,7 +6,7 @@ let currentTheme = localStorage.getItem('theme') || null;
 if (currentTheme === 'dark') {
     document.documentElement.setAttribute('data-theme', 'dark');
     themeBtn.classList.toggle('night');
-    logo.setAttribute('src', '/src/assets/logo_nav.png');
+    logo.setAttribute('src', '/logo_nav.png');
 }
 
 themeBtn.addEventListener('click', () => {
@@ -15,13 +15,13 @@ themeBtn.addEventListener('click', () => {
         localStorage.setItem('theme', 'light');
         currentTheme = 'light';
         themeBtn.classList.toggle('night');
-        logo.setAttribute('src', '/src/assets/logo_nav_light.png');
+        logo.setAttribute('src', '/logo_nav_light.png');
     } else if (currentTheme === 'light' || !currentTheme) {
         document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
         currentTheme = 'dark';
         themeBtn.classList.toggle('night');
-        logo.setAttribute('src', '/src/assets/logo_nav.png');
+        logo.setAttribute('src', '/logo_nav.png');
     }
 });
 ///////////////////////// Notification
@@ -39,7 +39,7 @@ const notify = (message) => {
 ///////////////// Calculate total amount
 const checkedItemsCount = document.querySelector('#cart_count_aside');
 const costPrice = document.querySelector('#cost_price');
-const totalPrice = document.querySelector("#total_price")
+const totalPrice = document.querySelector("#total_price");
 const calculateTotal = () => {
     const currentCart = JSON.parse(
         localStorage.getItem('cart') || '{"cart":[]}'
@@ -61,19 +61,16 @@ const calculateTotal = () => {
 calculateTotal();
 ////////////////////////////////
 const products = document.querySelector('.products');
+const selectAllBox = document.querySelector('.select_all_box');
+const selectAll = document.querySelector('#select_all');
 const emptyCart = () => {
     products.innerHTML = `<p class="empty_cart">There are no items in the shopping cart.</p>`;
     products.classList.add("empty");
 };
 ////////////////////////////////
 
-const renderCart = async () => {
+const renderCart = () => {
     try {
-        const res = await fetch('http://localhost:3300/products');
-        if(!res.ok) {
-            throw new Error("Serverdan ma'lumot olishda xatolik");
-        };
-
         const cartData = JSON.parse(localStorage.getItem("cart"));
         if (!cartData || cartData.cart.length < 1) {
             emptyCart();
@@ -209,8 +206,6 @@ const renderCart = async () => {
 renderCart()
 
 ///////// Select All
-const selectAllBox = document.querySelector('.select_all_box');
-const selectAll = document.querySelector("#select_all");
 selectAllBox.addEventListener("click", () => {
     if(selectAll.checked){
         const currentCart = JSON.parse(localStorage.getItem("cart"));

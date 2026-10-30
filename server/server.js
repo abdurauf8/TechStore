@@ -64,7 +64,7 @@ const getToken = (req) => {
     return token;
 };
 
-const token = 'abd34sd34';
+const token = process.env.TOKEN || 'abd34sd34';
 
 const server = createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -280,6 +280,5 @@ const server = createServer((req, res) => {
     }
 });
 
-server.listen(3300, () => {
-    console.log('Server 3300-portda ishlayapti.');
-});
+const PORT = process.env.PORT || 3300;
+server.listen(PORT, () => console.log(`Server ${PORT}-portda ishlayapti.`));

@@ -20,9 +20,9 @@ let currentTheme = localStorage.getItem('theme') || null;
 if (currentTheme === 'dark') {
     document.documentElement.setAttribute('data-theme', 'dark');
     themeBtn.classList.toggle('night');
-    logo.setAttribute('src', '/src/assets/logo_nav.png');
-    formTabLogo.setAttribute('src', '/src/assets/logo_login.png');
-    loginTabLogo.setAttribute('src', '/src/assets/logo_login.png');
+    logo.setAttribute('src', '/logo_nav.png');
+    formTabLogo.setAttribute('src', '/logo_login.png');
+    loginTabLogo.setAttribute('src', '/logo_login.png');
 }
 
 themeBtn.addEventListener('click', () => {
@@ -31,17 +31,17 @@ themeBtn.addEventListener('click', () => {
         localStorage.setItem('theme', 'light');
         currentTheme = 'light';
         themeBtn.classList.toggle('night');
-        logo.setAttribute('src', '/src/assets/logo_nav_light.png');
-        formTabLogo.setAttribute('src', '/src/assets/logo_nav_light.png');
-        loginTabLogo.setAttribute('src', '/src/assets/logo_nav_light.png');
+        logo.setAttribute('src', '/logo_nav_light.png');
+        formTabLogo.setAttribute('src', '/logo_nav_light.png');
+        loginTabLogo.setAttribute('src', '/logo_nav_light.png');
     } else if (currentTheme === 'light' || !currentTheme) {
         document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
         currentTheme = 'dark';
         themeBtn.classList.toggle('night');
-        logo.setAttribute('src', '/src/assets/logo_nav.png');
-        formTabLogo.setAttribute('src', '/src/assets/logo_login.png');
-        loginTabLogo.setAttribute('src', '/src/assets/logo_login.png');
+        logo.setAttribute('src', '/logo_nav.png');
+        formTabLogo.setAttribute('src', '/logo_login.png');
+        loginTabLogo.setAttribute('src', '/logo_login.png');
     }
 });
 ///////////////////////// Notification
@@ -79,6 +79,7 @@ const loginLink = document.querySelector('#login_link');
 const loginScreen = document.querySelector('.login_screen');
 const rightNav = document.querySelector('.right_nav');
 const cartLink = document.querySelector('.cart');
+const searchInput = document.querySelector('#search_input');
 
 let editProductId = null;
 let token = localStorage.getItem('token') || null;
@@ -115,12 +116,13 @@ const changeNav = () => {
 };
 changeNav();
 
-
+const API = import.meta.env.VITE_API_URL || 'http://localhost:3300';
 
 //////// Fetch products
 const fetchProducts = async function (role) {
+    products.textContent = "Yuklanmoqda..."
     try {
-        const res = await fetch('http://localhost:3300/products');
+        const res = await fetch(`${API}/products`);
         if (!res.ok) {
             throw new Error("Serverdan ma'lumot olishda xatolik");
         }
@@ -161,7 +163,6 @@ const fetchProducts = async function (role) {
         });
 
         // Search rendering
-        const searchInput = document.querySelector('#search_input');
         let timer;
         searchInput.addEventListener('input', () => {
             if (searchInput.value.length < 1 || !searchInput.value) {
@@ -213,7 +214,6 @@ const fetchProducts = async function (role) {
                             byNames.push(name);
                         }
                     }
-                    console.log(byNames);
                     if (byNames.length > 0) {
                         const readyProducts = [];
                         for (let name of byNames) {
@@ -231,7 +231,7 @@ const fetchProducts = async function (role) {
                 }
 
                 pagenation(filtered);
-            }, 1500);
+            }, 500);
         });
 
         // Rendering pagenaton
@@ -559,14 +559,9 @@ const fetchProducts = async function (role) {
                         editProductId = product.id;
                     } else if (e.target.closest('.delete_btn')) {
                         async function deleteProduct() {
-                            if (
-                                confirm(
-                                    `${product.name} ni rostdan ham o'chirmoqchimisiz?`
-                                )
-                            ) {
-                                const res = await fetch(
-                                    `http://localhost:3300/products/${product.id}`,
-                                    {
+                            if (!confirm(`${product.name} ni rostdan ham o'chirmoqchimisiz?`)) return; 
+                                try{
+                                const res = await fetch(`${API}/products/${product.id}`,{
                                         method: 'DELETE',
                                         headers: {
                                             'Content-Type': 'application/json',
@@ -574,12 +569,13 @@ const fetchProducts = async function (role) {
                                         },
                                     }
                                 );
-                                if (!res.ok)
-                                    throw new Error(
-                                        "O'chirish amalga oshmadi."
-                                    );
+                                const data = await res.json();
+                                if (!res.ok) throw new Error(data.holat);
                                 notify("Mahsulot o'chirildi.");
                                 fetchProducts('admin');
+                            }catch(err){
+                                console.log(err.message);
+                                notify(err.message);
                             }
                         }
                         deleteProduct();
@@ -645,7 +641,7 @@ eye.addEventListener('click', () => {
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
-        const res = await fetch('http://localhost:3300/login', {
+        const res = await fetch(`${API}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -688,7 +684,7 @@ postForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
         if (!editProductId) {
-            const res = await fetch(`http://localhost:3300/products`, {
+            const res = await fetch(`${API}/products`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -715,7 +711,7 @@ postForm.addEventListener('submit', async (e) => {
             fetchProducts('admin');
         } else {
             const res = await fetch(
-                `http://localhost:3300/products/${editProductId}`,
+                `${API}/products/${editProductId}`,
                 {
                     method: 'PUT',
                     headers: {

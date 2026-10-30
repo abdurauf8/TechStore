@@ -10,7 +10,7 @@ HTML5, CSS3, JavaScript, Node.js, Vite, Eslint, REST API, GIT
 
 ### 1. Clone the repository
 
-git clone https://github.com/abdurauf8/TechStore.git
+`git clone https://github.com/abdurauf8/TechStore.git`
 `cd TechStore`
 
 ### 2. Install dependencies
@@ -32,12 +32,16 @@ Vite will display the local frontend URL in the terminal, usually:
 
 Open the displayed URL in your browser.
 
+### 5. | POST | `/login` | Log in as admin, returns a token |
+**Auth:** POST, PUT and DELETE require the header `Authorization: Bearer <token>`.
+Admin login: `admin` / `admin123`
+
 ## API Endpoints
 Base URL: `http://localhost:3300`
 
 | Method | Endpoint | Description |
+|--------|----------|-------------|
 | GET | `/products` | Get all products |
-| GET | `/products/:id` | Get a product by ID |
 | POST | `/products` | Add a new product |
 | PUT | `/products/:id` | Update an existing product |
 | DELETE | `/products/:id` | Delete a product |
@@ -59,8 +63,8 @@ Base URL: `http://localhost:3300`
 
 ## Screenshot
 
-![TechStore Homepage(light)](./screenshot(2).PNG)
-![TechStore Homepage(dark)](./screenshot.PNG)
+![TechStore Homepage(light)](./screenshot-light.PNG)
+![TechStore Homepage(dark)](./screenshot-dark.PNG)
 
 ## Author: Abdurauf.
 GitHub: [abdurauf8](https://github.com/abdurauf8)
