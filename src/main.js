@@ -651,10 +651,10 @@ loginForm.addEventListener('submit', async (e) => {
                 password: passwordInput.value.trim(),
             }),
         });
-        if (!res.ok) {
-            throw new Error('Login muvaffaqiyatsiz.');
-        }
         const data = await res.json();
+        if (!res.ok) {
+            throw new Error(data.holat);
+        }
         localStorage.setItem('token', data.token);
         token = data.token;
         loggedIn = true;
@@ -662,6 +662,7 @@ loginForm.addEventListener('submit', async (e) => {
         loginScreen.style.display = 'none';
         document.body.style.overflow = '';
 
+        notify("Muvaffaqiyatli kirildi (admin)");
         changeNav();
         fetchProducts('admin');
     } catch (err) {
