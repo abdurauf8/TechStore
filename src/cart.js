@@ -208,7 +208,7 @@ renderCart()
 ///////// Select All
 selectAllBox.addEventListener("click", () => {
     if(selectAll.checked){
-        const currentCart = JSON.parse(localStorage.getItem("cart"));
+        const currentCart = JSON.parse(localStorage.getItem('cart')) || { cart: [] };
         currentCart.cart.forEach(p => p.checked = true);
         localStorage.setItem("cart", JSON.stringify(currentCart));
         renderCart();
