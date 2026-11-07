@@ -214,7 +214,7 @@ selectAllBox.addEventListener("click", () => {
         renderCart();
         calculateTotal();
     }else {
-        const currentCart = JSON.parse(localStorage.getItem('cart'));
+        const currentCart = JSON.parse(localStorage.getItem('cart')) || { cart: [] };
         currentCart.cart.forEach((p) => (p.checked = false));
         localStorage.setItem('cart', JSON.stringify(currentCart));
         renderCart();
