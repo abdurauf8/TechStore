@@ -66,7 +66,7 @@ Admin login: `admin` / `admin123`
 ![TechStore Homepage(light)](./screenshot-light.PNG)
 ![TechStore Homepage(dark)](./screenshot-dark.PNG)
 
-**Live demo:** https://tech-store-peach.vercel.app
+**Live demo:** https://tech-store-dokon.vercel.app
 **API:** https://techstore-jd2m.onrender.com
 
 ## Author: Abdurauf.
