@@ -602,12 +602,14 @@ loginLink.addEventListener('click', () => {
         loginScreen.style.display = 'flex';
         document.body.style.overflow = 'hidden';
     } else {
+        if(!confirm('Haqiqatdan ham profildan chiqmoqchimisiz ?')) return;
         loginLink.textContent = 'Log in';
         loggedIn = false;
         token = null;
         localStorage.removeItem('token');
         fetchProducts('user');
         changeNav();
+        notify('Profildan chiqildi .')
     }
 });
 loginScreen.addEventListener('click', (e) => {
