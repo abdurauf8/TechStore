@@ -609,7 +609,7 @@ loginLink.addEventListener('click', () => {
         localStorage.removeItem('token');
         fetchProducts('user');
         changeNav();
-        notify('Profildan chiqildi .')
+        notify('Profildan chiqildi.')
     }
 });
 loginScreen.addEventListener('click', (e) => {
